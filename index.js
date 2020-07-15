@@ -1,7 +1,8 @@
-/*Do no log anything apart from access_token. */
+/*
+NOTE: Do no log anything apart from access_token
+*/
 
 const puppeteer = require('puppeteer')
-
 
 async function main() {
   const url = process.argv[2] || process.env['NHSD_LOGIN_URL']
@@ -23,13 +24,10 @@ async function nhsdLogin(url) {
   const navigator = gotoLogin(browser, url)
   const page = await navigator().catch(navigator).catch(navigator) // retries three times
 
-
   await page.waitForSelector('body > div > div > pre', {timeout: 30000});
-  let credHtmlText = await page.$eval('body > div > div > pre', e => e.innerText)
-  let credentialsJsonText = credHtmlText.replace(/'/g, '"')
-  let credentials= JSON.parse(credentialsJsonText)
-
-  await browser.close();
+  const credHtmlText = await page.$eval('body > div > div > pre', e => e.innerText)
+  const credentialsJsonText = credHtmlText.replace(/'/g, '"')
+  const credentials= JSON.parse(credentialsJsonText)
 
   return credentials['access_token']
 }

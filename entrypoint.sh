@@ -1,5 +1,6 @@
 #!/bin/ash
 
 cd /usr/src/app || exit
-npm run --silent start "$@" | head -n 1
-#npm run start "$@"
+access_token=$(npm run --silent start "$@" | head -n 1)
+
+echo "$access_token"
